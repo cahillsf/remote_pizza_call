@@ -1,0 +1,45 @@
+syntax = "proto2";
+
+package pizza;
+
+service OrderPricer {
+ 
+  rpc GetOrderPrice(PizzaOrder) returns (PizzaOrderPriced) {}
+
+  // rpc ListOrders() returns (stream PizzaOrder) {}
+
+}
+
+message PizzaOrder {
+  optional string name = 1;
+  optional string email = 2;
+
+  enum PizzaSize {
+    LARGE = 0;
+    MEDIUM = 1;
+    SMALL = 2;
+  }
+
+  enum Toppings {
+    PEPPERONI = 0;
+    SAUSAGE = 1;
+    MUSHROOM = 2;
+    PEPPERS = 3;
+    ONIONS = 4;
+    MEATBALL = 5;
+    GARLIC = 6;
+    PARM = 7;
+  }
+
+  message Pizza {
+    optional PizzaSize size = 1;
+    repeated Toppings toppingslist = 2;
+  }
+
+  repeated Pizza pizzas = 3;
+}
+
+message PizzaOrderPriced {
+  optional PizzaOrder order = 1;
+  optional float price = 2;
+}

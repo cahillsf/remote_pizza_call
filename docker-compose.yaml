@@ -1,0 +1,59 @@
+version: '3'
+services:
+    ddagent:
+      image: datadog/agent:latest
+      container_name: datadog-agent-ps
+      env_file:
+        - ~/sandbox.docker.env
+      environment:
+        - DD_APM_ENABLED=true
+        - DD_LOGS_ENABLED=true
+        - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+        - DD_APM_NON_LOCAL_TRAFFIC=true
+        # - DD_AC_EXCLUDE=name:datadog-agent-ft
+      volumes: 
+        - /var/run/docker.sock:/var/run/docker.sock:ro
+        - /proc/:/host/proc/:ro
+        - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+      ports:
+        - "8126:8126"
+      restart: on-failure
+    pyclient:
+      build:
+        dockerfile: Dockerfile
+        context: ./py_client
+      depends_on:
+        - pyserver
+      # image: mongo
+      # environment:
+      #   MONGO_INITDB_ROOT_USERNAME: root
+      #   MONGO_INITDB_ROOT_PASSWORD: example
+      # volumes:
+      #   - ./mongo-db/mongo-db-init-files:/docker-entrypoint-initdb.d
+    #   labels:
+    #     com.datadoghq.ad.check_names: '["mysql"]'
+    #     com.datadoghq.ad.init_configs: '[{}]'
+    #     com.datadoghq.ad.instances: '[{"server": "%%host%%", "user": "datadog","pass": "tacosandburritos"}]'
+      ports:
+        - '27017:27017'
+    pyserver:
+      # image: cahillsf/ps-flask:test
+      build:
+        dockerfile: Dockerfile
+        context: ./py_server
+      depends_on:
+        - ddagent
+      environment:
+        - DD_AGENT_HOST=datadog-agent-ps
+      ports:
+        - '50051:50051'
+    # vue_web:
+    #   # image: cahillsf/ps-vue:test
+    #   build:
+    #   #   dockerfile: Dockerfile
+    #     dockerfile: Dockerfiledev
+    #     context: ./funvue
+    #   env_file:
+    #     - ~/sandbox.docker.env
+    #   ports:
+    #     - '8080:8080'
