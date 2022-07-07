@@ -11,3 +11,21 @@ Idea is to :
 - client hosts the routes to receive front end call, then makes a gRPC call to the gRPC server (PizzaOrder)
 - gRPC server calculates the price of the pizza order based on "market conditions (some sort of pseudo random number generator", then returns that to the clien  (PizzaOrderPriced)
 - client passes along the priced order to the front end which reflects the updated price
+
+
+{
+	"showModal": false,
+	"name": "sdfd",
+	"email": "sdf",
+	"pizza": {
+		"size": "large",
+		"toppingslist": ["PEPPERS", "SAUSAGE"]
+	},
+	"pizzas": [{
+		"size": "large",
+		"toppingslist": ["PEPPERS", "SAUSAGE"]
+	}, {
+		"size": "large",
+		"toppingslist": ["ONIONS", "PARM"]
+	}]
+}

@@ -25,6 +25,8 @@ services:
       depends_on:
         - pyserver
       # image: mongo
+      environment:
+        - DD_AGENT_HOST=ddagent
       # environment:
       #   MONGO_INITDB_ROOT_USERNAME: root
       #   MONGO_INITDB_ROOT_PASSWORD: example
@@ -35,7 +37,7 @@ services:
     #     com.datadoghq.ad.init_configs: '[{}]'
     #     com.datadoghq.ad.instances: '[{"server": "%%host%%", "user": "datadog","pass": "tacosandburritos"}]'
       ports:
-        - '27017:27017'
+        - "8000:8000"
     pyserver:
       # image: cahillsf/ps-flask:test
       build:
@@ -44,9 +46,9 @@ services:
       depends_on:
         - ddagent
       environment:
-        - DD_AGENT_HOST=datadog-agent-ps
+        - DD_AGENT_HOST=ddagent
       ports:
-        - '50051:50051'
+        - "50051:50051"
     # vue_web:
     #   # image: cahillsf/ps-vue:test
     #   build:

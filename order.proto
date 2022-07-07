@@ -33,7 +33,7 @@ message PizzaOrder {
 
   message Pizza {
     optional PizzaSize size = 1;
-    repeated Toppings toppingslist = 2;
+    repeated Toppings toppings = 2;
   }
 
   repeated Pizza pizzas = 3;
